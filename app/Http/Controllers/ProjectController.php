@@ -2,30 +2,30 @@
 
 namespace App\Http\Controllers;
 
+use App\Material;
+use App\Voucher;
 use Illuminate\Http\Request;
+use DataTables;
+use Exception;
+use Illuminate\Support\Facades\DB;
 
 class ProjectController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        if ($request->ajax()) {
+            $data = Material::latest()->get();
+            return Datatables::of($data)
+                    ->addIndexColumn()
+                    ->addColumn('action', function($row){
+                        $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Edit" data-placement="top" title="Add" class="edit btn btn-primary btn-sm addToProjectVoucher"><i class="fa fa-plus"></i></a>';
+                        return $btn;
+                    })
+                    ->rawColumns(['action'])
+                    ->make(true);
+        }
+        return view('vouchers.project.index');
     }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
     /**
      * Store a newly created resource in storage.
      *
@@ -34,31 +34,19 @@ class ProjectController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // $maintenance = Maintenance::create($this->validateData());
+        $material_id = Material::find($request->input('material_id'));
+        $voucher_id = Voucher::find($request->input('voucher_id'));
+        $material_id->vouchers()->attach($voucher_id,[
+            'voucher_code'=>$request->input('request_voucher_no'),
+            'quantity'=>$request->input('quantity'),
+            'place_of_const'=>$request->input('place_of_const'),
+            'description_of_work'=>$request->input('description_of_work'),
+            'mct_number'=>$request->input('mct_number'),
+            'issued_by'=>$request->input('issued_by'),
+            'received_by'=>$request->input('received_by'),
+        ]);
     }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
     /**
      * Update the specified resource in storage.
      *
@@ -68,7 +56,11 @@ class ProjectController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $material = Material::findOrfail($id);
+        $material->quantity = $material->quantity - $request->input('req_quantity');
+        $material->update();
+        // $this->insertToAllVoucher($material->id);
+        return response()->json(['success'=>'Material updated successfully.']);
     }
 
     /**
@@ -79,6 +71,40 @@ class ProjectController extends Controller
      */
     public function destroy($id)
     {
-        //
+        
+    }
+    private function validateData(){
+        return request()->validate([
+            'request_voucher_no'=>'required',
+            'quantity'=>'required',
+            'place_of_const'=>'',
+        ]);
+    }
+    public function insertToAllVoucher($voucherCode){
+
+    }
+    //function to return the requested quantity
+    public function undoMaterial(Request $request, $id){
+        try{
+            $material = Material::findOrFail($id);
+            $material->quantity += $request->input('return_quant');
+            $material->update();
+            return response()->json(['success'=>'Material updated successfully.']);
+        }
+        catch(Exception $e){
+            echo 'Message: ' . $e->getMessage();
+        }
+    }
+    //function to subtract 1 the requested  quantity
+    public function subtractMaterial(Request $request, $id){
+        try{
+            $material = Material::findOrFail($id);
+            $material->quantity += $request->input('return_quant');
+            $material->update();
+            return response()->json(['success'=>'Material updated successfully.']);
+        }
+        catch(Exception $e){
+            echo 'Message: ' . $e->getMessage();
+        }
     }
 }

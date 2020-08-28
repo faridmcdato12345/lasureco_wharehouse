@@ -9,8 +9,47 @@
 @import '~bootstrap/scss/bootstrap';
 @import '~admin-lte/dist/css/adminlte.css';
 @import "~font-awesome/scss/font-awesome.scss";
+@import "~datatables.net-bs4/css/dataTables.bootstrap4.css";
+@import "~datatables.net-buttons-bs4/css/buttons.bootstrap4.css";
+@import "~bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css";
 
 .navbar-laravel {
   background-color: #fff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+}
+.voucher-list{
+  background: #ffffff;
+  border: 2px solid gray;
+  border-radius: 5px;
+  padding: 10px;
+}
+.voucher-number , .voucher-label{
+  font-weight: bold;
+}
+.voucher-number{
+  color: red;
+  font-style: italic;
+}
+.voucher_code, .voucher_date{
+  font-weight: bolder;
+  border-bottom: 2px solid black;
+}
+.voucher_place{
+  font-weight: bolder;
+  border-bottom: 2px solid black;
+  text-align: center;
+}
+.hr{
+  width: 100%;
+  display: block;
+  border-bottom: 2px solid black;
+}
+.div-4{
+  max-width: 50%;
+}
+.signaturies{
+  padding-top:5%;
+}
+#myTable tbody tr td{
+  text-align: center;
 }

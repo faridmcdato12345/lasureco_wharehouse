@@ -15,7 +15,7 @@ class CreateMaterialsTable extends Migration
     {
         Schema::create('materials', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->bigInteger('code_number')->nullable();
+            $table->string('code_number')->nullable();
             $table->string('name');
             $table->integer('quantity');
             $table->string('unit')->nullable();

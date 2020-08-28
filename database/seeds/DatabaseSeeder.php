@@ -21,9 +21,27 @@ class DatabaseSeeder extends Seeder
         ]);
         DB::table('users')->insert([
             'name' => 'farid',
-            'email' => 'faridmcdato@gmail.com',
+            'username' => 'faridmcdato',
             'password' => Hash::make('Cogiemcd42'),
-            'role'=>1
+            'role'=>1,
+            'is_active'=>1
+        ]);
+        DB::table('vouchers')->insert([
+            [
+                'name'=>'maintenance'
+            ],
+            [
+                'name'=>'blanket'
+            ],
+            [
+                'name'=>'metering'
+            ],
+            [
+                'name'=>'sitio'
+            ],
+            [
+                'name'=>'Project'
+            ],
         ]);
     }
 }

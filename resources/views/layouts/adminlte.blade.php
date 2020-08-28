@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <!--
 This is a starter template page. Use this page to start your new project from
@@ -11,9 +10,19 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <title>LASURECO</title>
-
   <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-  <script src="{{asset('js/app.js')}}"></script>
+  
+  <style>
+    @media print
+    {
+      html, body { height: auto; }
+      .dt-print-table,.dt-print-table thead tr:nth-child(1) th,.dt-print-table thead tr:nth-child(2) th {border: 0 none !important;}
+      .dt-print-table img{
+        width:100px;
+        text-align: left !important;
+      }
+    }
+  </style>
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper" id="app">
@@ -23,7 +32,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <!-- Left navbar links -->
     <ul class="navbar-nav">
       <li class="nav-item">
-        <a class="nav-link" data-widget="pushmenu" href="#"><i class="fa fa-bars"></i></a>
+        <a class="nav-link" data-widget="pushmenu" href="#"><i class="fa fa-bars" style="color:
+          #D50000"></i></a>
       </li>
     </ul>
   </nav>
@@ -55,89 +65,149 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
-          <li class="nav-item has-treeview">
-            <a href="#" class="nav-link active">
-              <i class="nav-icon fa fa-tachometer"></i>
+          <li class="nav-item dashboard">
+            <a href="{{route('dashboard')}}" class="nav-link">
+              <i class="nav-icon fa fa-tachometer" style="color:#76FF03;"></i>
               <p>
                 Dashboard
               </p>
             </a>
           </li>
-          <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fa fa-wrench"></i>
+          @if (Auth::user()->role == 1)
+          <li class="nav-item user">
+            <a href="{{route('user.index')}}" class="nav-link">
+              <i class="nav-icon fa fa-user" style="color:#795548;"></i>
               <p>
-                Material
+                User
               </p>
             </a>
           </li>
-          <li class="nav-item has-treeview">
+          @endif
+          <li class="nav-item has-treeview material">
             <a href="#" class="nav-link">
-              <i class="nav-icon fa fa-edit"></i>
+              <i class="nav-icon fa fa-wrench" style="color:#D500F9;"></i>
               <p>
-                Vouchers
+                Material
                 <i class="right fa fa-angle-left"></i>
               </p>
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="{{route('material.index')}}" class="nav-link">
+                  <i class="nav-icon"></i>
+                  <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Add Material</p>
+                </a>
+              </li>
+              <li class="nav-item receive">
+              <a href="{{route('material.receive')}}" class="nav-link">
+                  <i class="nav-icon"></i>
+                  <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Received</p>
+                </a>
+              </li>
+              <li class="nav-item release">
+                <a href="{{route('material.release')}}" class="nav-link">
+                  <i class="nav-icon"></i>
+                  <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Released</p>
+                </a>
+              </li>
+              <li class="nav-item return">
+                <a href="" class="nav-link">
+                  <i class="nav-icon"></i>
+                  <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Returned</p>
+                </a>
+              </li>
+              <li class="nav-item inventory">
+                <a href="{{route('material.inventory')}}" class="nav-link">
+                  <i class="nav-icon"></i>
+                  <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Inventory</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-item has-treeview voucher">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fa fa-edit" style="color:#FF4081;"></i>
+              <p>
+                Material Charge Ticket
+                <i class="right fa fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item maintenance">
+                <a href="{{route('maintenance.index')}}" class="nav-link">
                   <i class="nav-icon"></i>
                   <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Maintenance</p>
                 </a>
               </li>
-              <li class="nav-item">
-                <a href="#" class="nav-link">
+              <li class="nav-item blanket">
+              <a href="{{route('blanket.index')}}" class="nav-link">
                   <i class="nav-icon"></i>
                   <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Blanket Work</p>
                 </a>
               </li>
-              <li class="nav-item">
-                <a href="#" class="nav-link">
+              <li class="nav-item project">
+                <a href="{{route('project.index')}}" class="nav-link">
                   <i class="nav-icon"></i>
                   <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Project</p>
                 </a>
               </li>
-              <li class="nav-item">
-                <a href="#" class="nav-link">
+              <li class="nav-item metering">
+                <a href="{{route('metering.index')}}" class="nav-link">
                   <i class="nav-icon"></i>
                   <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Metering</p>
                 </a>
               </li>
-              <li class="nav-item">
-                <a href="#" class="nav-link">
+              <li class="nav-item sitio">
+                <a href="{{route('sitio.index')}}" class="nav-link">
                   <i class="nav-icon"></i>
                   <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Sitio</p>
                 </a>
               </li>
             </ul>
           </li>
-          <li class="nav-item has-treeview">
+          <li class="nav-item material_credit">
+            <a href="{{route('material_credit.index')}}" class="nav-link">
+              <i class="nav-icon fa fa-edit" style="color:#76FF03;"></i>
+              <p>
+                Material Credit Ticket
+                
+              </p>
+            </a>
+          </li>
+          <li class="nav-item has-treeview setting">
             <a href="#" class="nav-link">
-              <i class="nav-icon fa fa-cog"></i>
+              <i class="nav-icon fa fa-cog" style="color:#7C4DFF"></i>
               <p>
                 Setting
                 <i class="right fa fa-angle-left"></i>
               </p>
             </a>
             <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="#" class="nav-link">
+              <li class="nav-item profile">
+              <a href="{{route('profile.index')}}" class="nav-link password">
                   <i class="nav-icon"></i>
                   <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Change Password</p>
                 </a>
               </li>
             </ul>
           </li>
+          <li class="nav-item import">
+            <a href="{{route('import.index')}}" class="nav-link">
+              <i class="nav-icon fa fa-file"></i>
+              <p>
+                Import File
+              </p>
+            </a>
+          </li>
           <li class="nav-item form-group">
             <a href="{{ route('logout') }}" class="nav-link" onclick="event.preventDefault();
             document.getElementById('logout-form').submit();">
-                <i class="nav-icon fa fa-sign-out"></i>
+                <i class="nav-icon fa fa-sign-out" style="color:#D50000"></i>
                 <p>
                 Sign-out
                 </p>
             </a>
-        </li>
+          </li>
         <form id="logout-form" action="{{ route('logout') }}" method="POST">
             @csrf
            
@@ -156,6 +226,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <div class="modal fade" id="ajaxModal" aria-hidden="true">
         @yield('modal')
     </div>
+    <div class="modal fade" id="importModal" aria-hidden="true">
+      @yield('importModal')
+    </div>
+    @yield('addMaterial')
   </div>
   
   <!-- /.content-wrapper -->
@@ -169,6 +243,32 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
 <!-- REQUIRED SCRIPTS -->
 
-
 </body>
+<script src="{{asset('js/app.js')}}"></script>
+<script type="text/javascript">
+  $(document).ready(function(){
+    setTimeout(function() {
+        $(".succes-alert").css('display','none')
+    }, 3000);
+    let pathName = window.location.pathname;
+    let num_one = getSecondPart(pathName,1)
+    let num_two = getSecondPart(pathName,2)
+    if(num_two == undefined){
+      if($('.nav-item').hasClass(num_one)){
+        $('.nav-item.'+num_one+' > a').addClass('active')
+      }
+    }
+    else{
+      if($('.nav-item.'+num_one).hasClass(num_one)){
+        $('.nav-item.'+num_one).addClass('menu-open')
+        $('.nav-item.'+num_one+' > a').addClass('active')
+        $('.nav-item.'+num_two+' > a').addClass('active')
+      }
+    }
+    function getSecondPart(str, num = '') {
+      return str.split('/')[num];
+    }
+  })
+</script>
+@yield('script')
 </html>

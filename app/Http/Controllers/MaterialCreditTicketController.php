@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use DataTables;
 use App\Material;
 use App\Material_Credit;
+use App\Material_Credit_Ticket;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -36,27 +37,45 @@ class MaterialCreditTicketController extends Controller
         //     'material_id'=>'required',
         //     'quantity'=>'required',
         // ]);
-        DB::table('material__credits')->insert([
-            'mcrt_number'=>$request->input('mcrt_number'),
-            'material_id'=>$request->input('material_id'),
-            'quantity'=>$request->input('quantity'),
-            'created_at' =>  \Carbon\Carbon::now(),
-            'updated_at' => \Carbon\Carbon::now(), 
-        ]);
+        $data = json_decode($request->getContent());
+        // return response()->json(['data'=>$data]);
+        $mcrtNumber = '';
+        $mctNumber = '';
+        $receivedBy = '';
+        $returnedBy = '';
+        $orderNumber = '';
+        $orderType = '';
+        $placeOfConstruction = '';
+        $descriptionOfWork = '';
+        foreach($data as $d){
+            $mcrtNumber = $d->mcrt_number;
+            $mctNumber = $d->mct_number;
+            $receivedBy = $d->received_by;
+            $returnedBy = $d->returned_by;
+            $orderNumber = $d->order_number;
+            $orderType = $d->order_type;
+            $placeOfConstruction = $d->place_of_construction;
+            $descriptionOfWork = $d->description_of_work;
+            DB::table('material__credits')->insert([
+                'mcrt_number'=>$d->mcrt_number,
+                'material_id'=>$d->material_id,
+                'quantity'=>$d->quantity,
+                'created_at' =>  \Carbon\Carbon::now(),
+                'updated_at' => \Carbon\Carbon::now(), 
+            ]);
+        }
         DB::table('material__credit__tickets')->insert([
-            'mcrt_number'=>$request->input('mcrt_number'),
-            'mct_number'=>$request->input('mct_number'),
-            'place_of_const'=>$request->input('place_of_const'),
-            'description_of_work'=>$request->input('description_of_work'),
-            'order_type'=>$request->input('order_type'),
-            'order_number'=>$request->input('order_number'),
-            'returned_by'=>$request->input('returned_by'),
-            'received_by'=>$request->input('received_by'),
+            'mcrt_number'=>$mcrtNumber,
+            'mct_number'=>$mctNumber,
+            'place_of_const'=>$placeOfConstruction,
+            'description_of_work'=>$descriptionOfWork,
+            'order_type'=>$orderType,
+            'order_number'=>$orderNumber,
+            'returned_by'=>$returnedBy,
+            'received_by'=>$receivedBy,
             'created_at' =>  \Carbon\Carbon::now(),
             'updated_at' => \Carbon\Carbon::now(), 
         ]);
     }
-    public function mcrt(){
-
-    }
+    
 }

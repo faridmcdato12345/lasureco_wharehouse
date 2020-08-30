@@ -270,6 +270,7 @@
                 $(this).closest('tr').remove();
             }
         });
+        let material_obj = [];
         //save to maintenance database
         $('body').on('click','.saveToMcrt',function(){
             let productid = '';
@@ -282,13 +283,23 @@
             let returned_by = $('#returned_by').val();
             let order_number = $("#order_number").val();
             let order_type = $("#orders").val();
-            // sendToAllVouchers(voucherNo);
             $("tr.item").each(function() {
                 productid = $(this).find("td:eq(0)").text();
                 quantity = $(this).find("td:eq(3)").text();
-                sendToMaterialCreditDb(productid,mcrt_number,quantity,mctNo,received_by,returned_by,order_number,order_type,place_of_const,description_of_work)
-                // materialReleased(productid,quantity)
+                material_obj.push({
+                    "material_id":productid,
+                    "mcrt_number":mcrt_number,
+                    "mct_number":mctNo,
+                    "quantity":quantity,
+                    "place_of_construction":place_of_const,
+                    "description_of_work":description_of_work,
+                    "received_by":received_by,
+                    "returned_by":returned_by,
+                    "order_number":order_number,
+                    "order_type":order_type
+                })
             });
+            sendToMaterialCreditDb(mcrt_number);
         })
         //delete material
         $('body').on('click', '.deleteMaterial', function () {
@@ -346,33 +357,20 @@
                 }
             }); 
         }
-        function sendToMaterialCreditDb(material_id,mcrt_number,quantity,mct_number,received_by,returned_by,order_number,order_type,place_of_const,description_of_work){
-            // let id = voucher_id
-            // let code = request_voucher
-            // let url = "{{url('/voucher/maintenance/print/1/:voucherCode')}}";
-            // url = url.replace(":voucherCode",code); 
+        function sendToMaterialCreditDb(mcrtNumber){
+            let url = "{{url('/material_credit/print/:mcrt_number')}}";
+            url = url.replace(":voucherCode",mcrtNumber); 
             $.ajax({
-                data: {
-                    material_id: material_id,
-                    mcrt_number:mcrt_number,
-                    quantity: quantity,
-                    mct_number:mct_number,
-                    received_by:received_by,
-                    returned_by:returned_by,
-                    order_number:order_number,
-                    order_type:order_type,
-                    place_of_const:place_of_const,
-                    description_of_work:description_of_work,
-                },
+                data: JSON.stringify(material_obj),
                 url: "{{ route('material_credit.store') }}",
                 type: "POST",
                 dataType: 'json',
                 success: function (data) {
-                    console.log("success")
+                    console.log(data)
                 },
                 error: function (data) {
-                    console.log("error")
-                    // window.open(url,"_self")
+                    console.log(data)
+                    window.open(url,"_self")
                     table.draw(); 
                 }
             });

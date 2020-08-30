@@ -68,7 +68,6 @@ class MaintenanceController extends Controller
         $material = Material::findOrfail($id);
         $material->quantity = $material->quantity - $request->input('req_quantity');
         $material->update();
-        // $this->insertToAllVoucher($material->id);
         return response()->json(['success'=>'Material updated successfully.']);
     }
 

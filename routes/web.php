@@ -79,6 +79,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/voucher/project/print/{id}/{voucher_code}','PrintableController@project')->name('printable.project');
     Route::get('/voucher/sitio/print/{id}/{voucher_code}','PrintableController@sitio')->name('printable.sitio');
     Route::get('/voucher/blanket/print/{id}/{voucher_code}','PrintableController@blanket')->name('printable.blanket');
+    Route::get('/material_credit/print/{mcrt_number}','PrintableController@mcrt')->name('printable.mcrt');
     Route::get('/home', 'HomeController@index')->name('home');
     Route::resource('/material','MaterialController',['except'=>['create','show']]);
     Route::resource('/voucher/maintenance','MaintenanceController',['except'=>['create','edit','show']]);

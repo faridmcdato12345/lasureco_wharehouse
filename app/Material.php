@@ -18,4 +18,8 @@ class Material extends Model
     public function material_released(){
         return $this->hasMany(Material_Released::class,'material_id');
     }
+
+    public function material_credit(){
+        return $this->hasMany(Material_Credit::class,'material_id');
+    }
 }

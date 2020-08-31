@@ -291,7 +291,6 @@
             let received_by = $('#received_by').val();
             let order_number = $("#order_number").val();
             let order_type = $("#orders").val();
-            console.log("order_type: " + order_type + "order_number: " + order_number)
             sendToAllVouchers(voucherNo,voucher_id);
             $("tr.item").each(function() {
                 productid = $(this).find("td:eq(0)").text();

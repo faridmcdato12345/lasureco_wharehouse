@@ -80,6 +80,25 @@
                         </div>
                     </div>
                     <div class="form-group">
+                        <label for="quantity" class="control-label">Order Number: </label>
+                        <div class="col-sm-offset-2">
+                            <select name="orders" id="orders" class="form-control" >
+                                <option >Select Option</option>
+                                <option value="1">W.O</option>
+                                <option value="2">C.W.O</option>
+                                <option value="3">B.W.O</option>
+                                <option value="4">Job Order</option>
+                                <option value="5">Main Order</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group" style="display:none;" id="order-number">
+                        <label for="quantity" class="control-label">Enter the Order Number:</label>
+                        <div class="col-sm-offset-2">
+                            <input type="text" class="form-control" id="order_number" name="order_number" value="" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
                         <label for="issued_by" class="control-label">Issued By:</label>
                         <div class="col-sm-offset-2">
                         <input type="text" readonly class="form-control" id="issued_by" name="issued_by" value="{{Auth::user()->name}}" required>
@@ -152,7 +171,9 @@
 <!----script--->
 <script>
     $(document).ready(function() {
-        
+        $('#orders').on('change',function(){
+            $('#order-number').css('display','block')
+        })
         generateVoucherCode()
         $.ajaxSetup({
             headers: {
@@ -224,6 +245,7 @@
                         $("#voucher_number").attr("readonly",false)
                         $("#mct_number").attr("readonly",false)
                         $("#received_by").attr("readonly",false)
+                        $('#order_number').attr("readonly",false)
                         $('#voucher-list table tbody').append('<tr class="item">'+'<td hidden>'+$('#material_id').val()+'</td>'+'<td>'+$('#code_number').val()+'</td>'+'<td>'+$('#name').val()+'</td>'+'<td>'+$('#req_quantity').val()+'</td>'+'<td><button class="btn minus_request col-md-6"><i class="fa fa-minus" style="color:blue;"></i></button><button class="col-md-6 btn delete_request"><i class="fa fa-times" style="color:red;"></i></button></td>'+'</tr>')
                         
                         $('#materialRequest').trigger("reset");
@@ -268,11 +290,13 @@
             let mctNo = $('#mct_number').val();
             let issued_by = $('#issued_by').val();
             let received_by = $('#received_by').val();
+            let order_number = $("#order_number").val();
+            let order_type = $("#orders").val();
             sendToAllVouchers(voucherNo,voucher_id)
             $("tr.item").each(function() {
                 productid = $(this).find("td:eq(0)").text();
                 quantity = $(this).find("td:eq(3)").text();
-                sendToProjectDb(voucher_id,productid,voucherNo,quantity,place,description_of_work,mctNo,issued_by,received_by)
+                sendToProjectDb(voucher_id,productid,voucherNo,quantity,place,description_of_work,mctNo,issued_by,received_by,order_number,order_type)
                 materialReleased(productid,quantity)
             });
         })
@@ -332,7 +356,7 @@
                 }
             }); 
         }
-        function sendToProjectDb(voucher_id,material_id,request_voucher,quantity,place,description_of_work,mct_number,issued_by,received_by){
+        function sendToProjectDb(voucher_id,material_id,request_voucher,quantity,place,description_of_work,mct_number,issued_by,received_by,order_number,order_type){
             let id = voucher_id
             let code = request_voucher
             let url = "{{url('/voucher/project/print/5/:voucherCode')}}";
@@ -348,6 +372,8 @@
                     mct_number:mct_number,
                     issued_by:issued_by,
                     received_by:received_by,
+                    order_number:order_number,
+                    order_type:order_type,
                 },
                 url: "{{ route('project.store') }}",
                 type: "POST",

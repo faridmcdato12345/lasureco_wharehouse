@@ -45,6 +45,8 @@ class SitioController extends Controller
             'mct_number'=>$request->input('mct_number'),
             'issued_by'=>$request->input('issued_by'),
             'received_by'=>$request->input('received_by'),
+            'order_type'=>$request->input('order_type'),
+            'order_number'=>$request->input('order_number'),
         ]);
     }
     /**

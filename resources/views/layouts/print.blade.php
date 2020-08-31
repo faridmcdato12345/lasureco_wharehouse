@@ -15,6 +15,12 @@
             table{
                 font-size:12px;
             }
+            .voucher_place{
+                width:80% !important;
+            }
+            table{
+                border:2px solid #000;
+            }
         }
         .name{
             text-transform: uppercase;
@@ -53,6 +59,7 @@
             border-bottom: 2px solid black;
             display: inline-block;
             width: 50%;
+            text-align: center;
         }
         .underline{
             border-bottom: 2px solid black;

@@ -10,7 +10,7 @@
     </div>
     <div class="col-md-4" style="text-align: right;display:inline-block">
         <label for="voucher_code_label" class="control-label voucher_code_label">MCT No.:&nbsp;&nbsp;&nbsp;</label>
-        <span class="voucher_code" style="display: inline-block;width:50%;text-align:center;">{{$mctNumber}}/span>
+        <span class="voucher_code" style="display: inline-block;width:50%;text-align:center;">{{$mctNumber}}</span>
     </div>
 </div>
 <div class="row">

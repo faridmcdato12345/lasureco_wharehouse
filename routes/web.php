@@ -117,4 +117,5 @@ Route::group(['middleware' => 'auth'], function () {
     Route::patch('/material_credit/{id}','MaterialCreditTicketController@update')->name('material_credit.update');
     Route::post('/material_credit','MaterialCreditTicketController@store')->name('material_credit.store');
     Route::post('/material/code_check','MaterialController@checkForMaterialNumber')->name('material.code_check');
+    Route::post('/vouchter/code_check','AllVoucherController@checkVoucherCode')->name('voucher.check_code');
 });

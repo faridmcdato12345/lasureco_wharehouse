@@ -51,4 +51,8 @@ class AllVoucherController extends Controller
         $voucher = AllVouchers::findOrFail($id);
         return response()->json($voucher);
     }
+    public function checkVoucherCode(Request $request){
+        $voucherCode = AllVouchers::where('voucher_code',$request->input('voucher_number'))->first();
+        return $voucherCode;
+    }
 }

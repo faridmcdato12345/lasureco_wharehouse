@@ -268,6 +268,27 @@ scratch. This page gets rid of all links and provides the needed markup only.
     function getSecondPart(str, num = '') {
       return str.split('/')[num];
     }
+    $('#voucher_number').focusout(function(){
+      $.ajax({
+        data: {
+          voucher_number: $(this).val()
+        },
+        dataType: 'json',
+        type:'POST',
+        url: "{{route('voucher.check_code')}}",
+        success: function(data){
+          $('#voucher_number').css('border','2px solid #ff5722')
+          $('#voucher-list .btn-primary').css('display','none')
+          $('.voucher-div .form-group:eq(0)').append("<p style='color:#F783AC;' class='warning'><i class='fa fa-exclamation-triangle' style='color:#F783AC;'></i>&nbsp;&nbsp;This voucher number is existing. Please, provide unique/different voucher number</p>")
+        },
+        error:function(error){
+          $('#voucher_number').css('border','1px solid #ced4da')
+          $('#voucher-list .btn-primary').css('display','block')
+          $('.warning').css('display','none');
+        }
+      })
+
+    })
   })
 </script>
 @yield('script')

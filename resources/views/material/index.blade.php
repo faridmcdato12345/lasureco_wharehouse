@@ -62,11 +62,12 @@
         <div class="modal-body">
             <form id="materialAdd" name="materialAdd" class="form-horizontal">
                 <input type="hidden" name="material_id" id="material_id">
-                <div class="form-group">
+                <div class="form-group code_number_div">
                     <label for="name" class="control-label">Item Code Number</label>
                     <div class="col-sm-offset-2">
                         <input type="text" class="form-control" id="code_number" name="code_number" placeholder="Enter Material Code" value="" maxlength="50" required="">
                     </div>
+                    <p style="color:#F783AC;display:none;" class="warning"><i class="fa fa-exclamation-triangle" style="color:#F783AC;"></i>&nbsp;&nbsp;This code number is existing. Please, use "ADD QUANTITY" function instead or provide different code number.</p>
                 </div>
                 <div class="form-group">
                     <label for="name" class="control-label">Name</label>
@@ -128,6 +129,27 @@
 @section('script')
 <script>
     $(document).ready(function() {
+        $('#code_number').focusout(function(){
+            $.ajax({
+                data: {
+                    code_number:$(this).val()
+                },
+                url: "{{route('material.code_check')}}",
+                type: "POST",
+                dataType: 'json',
+                success: function(data){
+                    $('#code_number').css('border','2px solid #ff5722')
+                    $('.warning').toggle()
+                    $('#saveMaterial').css('display','none')
+                },
+                error: function(error){
+                    console.log("no matched")
+                    $('#code_number').css('border','none')
+                    $('.warning').toggle()
+                    $('#saveMaterial').css('display','block')
+                }
+            });
+        })
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')

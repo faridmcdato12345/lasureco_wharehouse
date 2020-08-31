@@ -232,4 +232,9 @@ class MaterialController extends Controller
         $voucherCode = AllVouchers::where("voucher_id",$request->input('voucher_code'))->first();
         return $voucherCode;
     }
+    public function checkForMaterialNumber(Request $request){
+        $materialNumber = Material::where('code_number',$request->input('code_number'))->first();
+        //return response()->json(['message'=>'This material item code is existing already. Please use "ADD QUANTITY" instead or provide different item code.']);
+        return $materialNumber;
+    }
 }

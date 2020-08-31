@@ -160,7 +160,7 @@
                     </button>
                 </div>
             </form>
-            <button class="btn btn-primary form-control saveToVoucher" style="display:none;">Add to Voucher</button>
+            <button class="btn btn-primary form-control saveToVoucher" style="display:none;">Return</button>
         </div>
     </div>
 </div>
